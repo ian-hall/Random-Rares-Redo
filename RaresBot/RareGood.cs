@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Net;
 using System.Json;
+using System.IO;
 
 namespace RaresBot
 {
-    class EDRareStation
+    class RareGood
     {
         public string Item { get; set; }
         public string System { get; set; }
@@ -20,7 +21,7 @@ namespace RaresBot
         public double Y { get; set; }
         public double Z { get; set; }
 
-        public EDRareStation(JsonValue json, string item)
+        public RareGood(JsonValue json, string item)
         {
             //Need to null check on alloc and cost
             string checkAlloc = json["alloc"];
@@ -37,6 +38,40 @@ namespace RaresBot
             this.X = json["x"];
             this.Y = json["y"];
             this.Z = json["z"];
+        }
+
+        public static List<RareGood> LoadRares(string path, bool isRemote)
+        {
+            var allRares = new List<RareGood>();
+            if( !isRemote )
+            {
+                using (var jsonStream = File.OpenRead(path))
+                {
+                    var raresArray = (JsonObject)JsonObject.Load(jsonStream);
+                    foreach (var item in raresArray.Keys)
+                    {
+                        var itemInfo = raresArray[item];
+                        allRares.Add(new RareGood(itemInfo, item));
+                    }
+                }
+            }
+            else
+            {
+                var webRequest = WebRequest.Create(path);
+                using (var response = webRequest.GetResponse())
+                using (var content = response.GetResponseStream())
+                using (var jsonStream = new StreamReader(content))
+                {
+                    var raresArray = (JsonObject)JsonObject.Load(jsonStream);
+                    foreach (var item in raresArray.Keys)
+                    {
+                        var itemInfo = raresArray[item];
+                        allRares.Add(new RareGood(itemInfo, item));
+                    }
+                }
+            }
+
+            return allRares;
         }
 
         override

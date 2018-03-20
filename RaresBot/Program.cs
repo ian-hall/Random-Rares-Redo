@@ -3,6 +3,8 @@ using System.Linq;
 using System.IO;
 using System.Json;
 using System.Collections.Generic;
+using Microsoft.FSharp.Collections;
+using System.Net;
 
 namespace RaresBot
 {
@@ -10,21 +12,29 @@ namespace RaresBot
     {
         static void Main(string[] args)
         {
-            var allRares = new List<EDRareStation>();
-            using (var jsonStream = File.OpenRead("../../../rares.json"))
+            var localPath = @"../../../rares.json";
+            //var allRares = RareGood.LoadRares(localPath, false);
+
+            var remotePath = @"http://edtools.ddns.net/rares.json";
+            var allRares = RareGood.LoadRares(remotePath, true);
+
+
+            foreach (var rare in allRares)
             {
-                var raresArray = (JsonObject)JsonObject.Load(jsonStream);
-                foreach( var item in raresArray.Keys)
-                {
-                    var itemInfo = raresArray[item];
-                    allRares.Add(new EDRareStation(itemInfo, item));
-                }
+                Console.WriteLine(rare);
             }
+
             var allPorts = allRares.Select(item => item.Port);
             var allItems = allRares.Select(item => item.Item);
             var portsBreakDown = BreakDown(allPorts);
             var itemsBreakDown = BreakDown(allItems);
-            Console.WriteLine(allPorts);
+            //Console.WriteLine(allPorts);
+            //var testing = SeqModule.Windowed(3, allPorts);
+            //foreach(var whatever in testing)
+            //{
+            //    whatever.Any(x => { Console.Write("{0} ", x); return false; });
+            //    Console.WriteLine();
+            //}
         }
 
         /// <summary>
