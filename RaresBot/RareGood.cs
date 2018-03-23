@@ -40,6 +40,10 @@ namespace RaresBot
             this.Z = json["z"];
         }
 
+        /// <summary>
+        /// Probs gonna move this back to the main class sometime
+        /// TODO: just have it load from remote unless it is unavailable, then load from local file
+        /// </summary>
         public static List<RareGood> LoadRares(string path, bool isRemote)
         {
             var allRares = new List<RareGood>();
