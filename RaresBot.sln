@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaresBot", "RaresBot\RaresBot.csproj", "{33BBDC2D-C67E-4B01-82DA-FAC33ED64FAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaresBot", "RaresBot\RaresBot.csproj", "{33BBDC2D-C67E-4B01-82DA-FAC33ED64FAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaresBotTests", "RaresBotTests\RaresBotTests.csproj", "{A35EC660-2156-4C47-A4D0-6A7683A1006C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{33BBDC2D-C67E-4B01-82DA-FAC33ED64FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33BBDC2D-C67E-4B01-82DA-FAC33ED64FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33BBDC2D-C67E-4B01-82DA-FAC33ED64FAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A35EC660-2156-4C47-A4D0-6A7683A1006C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A35EC660-2156-4C47-A4D0-6A7683A1006C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A35EC660-2156-4C47-A4D0-6A7683A1006C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A35EC660-2156-4C47-A4D0-6A7683A1006C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

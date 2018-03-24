@@ -8,7 +8,7 @@ using System.Net;
 
 namespace RaresBot
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -72,6 +72,7 @@ namespace RaresBot
             
             //maybe fudge this a little so we have a better chance to go longer or do some kind of avg thing
             var rng = new Random();
+            //plz remember to delete the loop
             for( int i = 0; i < 100; i++ )
             {
                 var randVal = rng.NextDouble() * upperVal;
@@ -103,20 +104,34 @@ namespace RaresBot
         /// <summary>
         /// Converts a IEnumerable of strings into a list of lists of strings, based on the number of spaces in the string
         /// EX: This Is A String would return a list with 4 lists -> [[This][Is][A][String]]
+        /// Also removes duplicates from the list
         /// </summary>
         public static List<List<string>> BreakDown(IEnumerable<string> startingVals)
         {
             var retVal = new List<List<string>>();
+            //Gets the unique values in the list
             var firstList = startingVals.Select(s => s.Split().First());
-            retVal.Add(firstList.ToList());
+            retVal.Add(GetUniqueStrings(firstList));
             var rest = startingVals.Where(s => s.Split().Skip(1).Count() >= 1).Select(s => s.Split().Skip(1));
             while ( rest.Count() != 0 )
             {
-                var currList = rest.Select(s => s.First()).ToList();
-                retVal.Add(currList);
+                var currList = rest.Select(s => s.First());
+                retVal.Add(GetUniqueStrings(currList));
                 rest = rest.Where(s => s.Skip(1).Count() >= 1).Select(s => s.Skip(1));
             }
             return retVal;
+        }
+        /// <summary>
+        /// Returns the unique elements of a IEnumerable of strings
+        /// </summary>
+        /// <param name="l"></param>
+        /// <returns></returns>
+        public static List<string> GetUniqueStrings(IEnumerable<string> l)
+        {
+            return l.GroupBy(s => s)
+                    .ToDictionary(group => group.Key, group => group.Count())
+                    .Select(kvp => kvp.Key)
+                    .ToList();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.IO;
 
 namespace RaresBot
 {
-    class RareGood
+    public class RareGood
     {
         public string Item { get; set; }
         public string System { get; set; }
