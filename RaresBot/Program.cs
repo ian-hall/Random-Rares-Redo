@@ -22,13 +22,24 @@ namespace RaresBot
             var portsBreakDown = BreakDown(allPorts);
             //Special case: remove "de" from the 2nd list.
             portsBreakDown[1].Remove("de");
-            for( int i = 0; i < 100; i++ )
-            {
-                Console.WriteLine(GetPortName(portsBreakDown));
-            }
+            //for( int i = 0; i < 100; i++ )
+            //{
+            //    Console.WriteLine(GetPortName(portsBreakDown));
+            //}
 
             var allItems = allRares.Select(item => item.Item);
             var itemsBreakDown = BreakDown(allItems);
+            //special case: remove "De" and "of" from 2nd list
+            //also "Of" from 3rd list
+            //also "42" from 4th list
+            itemsBreakDown[1].Remove("De");
+            itemsBreakDown[1].Remove("of");
+            itemsBreakDown[2].Remove("Of");
+            itemsBreakDown[3].Remove("42");
+            for( int i = 0; i < 100; i++ )
+            {
+                Console.WriteLine(GetItemName(itemsBreakDown));
+            }
         }
 
         /// <summary>
@@ -97,6 +108,68 @@ namespace RaresBot
                 sb.AppendFormat("{0}-{1} ", portStuff[0][rng.Next(portStuff[0].Count - 1)], portStuff[0][rng.Next(portStuff[0].Count - 1)]);
                 sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
 
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// gets a silly elite dangerous rare item name
+        /// </summary>
+        /// is[0] is proper names
+        /// is[1-3] are types of items and modifiers and stuff
+        public static string GetItemName(List<List<string>> itemStuff)
+        {
+            var sb = new System.Text.StringBuilder();
+            var rng = new Random();
+            var typeVal = rng.NextDouble();
+
+            var combinedNames = new List<string>();
+            foreach (var s in itemStuff[2])
+            {
+                combinedNames.Add(s);
+            }
+            foreach (var s in itemStuff[3])
+            {
+                combinedNames.Add(s);
+            }
+            combinedNames = GetUniqueStrings(combinedNames);
+            var plurals = itemStuff[1].Where(s => s[s.Length - 1] == 's').ToList();
+            foreach (var s in plurals)
+            {
+                combinedNames.Add(s);
+            }
+            combinedNames = GetUniqueStrings(combinedNames);
+
+
+            var extraNames = itemStuff[1].Where(s => s[s.Length - 1] != 's').ToList();
+
+
+            //basic item name, is[0] + combinedNames
+            if (typeVal <= 0.30)
+            {
+                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
+            }
+            //is[0] + extraNames + combinedNames
+            else if (typeVal <= 0.60)
+            {
+                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count - 1)]);
+                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
+            }
+            //is[0] + combinedNames + "of" + extraNames
+            else if (typeVal <= 0.80)
+            {
+                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                sb.AppendFormat("{0} of ", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                sb.AppendFormat("{0}", extraNames[rng.Next(extraNames.Count - 1)]);
+                
+            }
+            //OwO
+            else
+            {
+                sb.AppendFormat("\t{0}-{1} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)], itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
             }
             return sb.ToString();
         }
