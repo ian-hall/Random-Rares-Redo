@@ -41,9 +41,10 @@ namespace RaresBot
         }
 
         /// <summary>
-        /// Probs gonna move this back to the main class sometime
-        /// TODO: just have it load from remote unless it is unavailable, then load from local file
+        /// Loads rare goods from a path
         /// </summary>
+        /// probs gonna move this back to main
+        /// TODO: just have it load from remote unless it is unavailable, then load from local file
         public static List<RareGood> LoadRares(string path, bool isRemote)
         {
             var allRares = new List<RareGood>();
