@@ -5,6 +5,7 @@ using System.Json;
 using System.Collections.Generic;
 using Microsoft.FSharp.Collections;
 using System.Net;
+using Tweetinvi;
 
 namespace RaresBot
 {
