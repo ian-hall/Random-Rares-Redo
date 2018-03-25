@@ -13,7 +13,7 @@ namespace RaresBot
     {
         static void Main(string[] args)
         {
-            var localPath = @"../../../rares.json";
+            var localPath = @"rares.json";
             var allRares = RareGood.LoadRares(localPath, false);
 
             //var remotePath = @"http://edtools.ddns.net/rares.json";
@@ -146,31 +146,65 @@ namespace RaresBot
 
 
             //basic item name, is[0] + combinedNames
-            if (typeVal <= 0.30)
+            if (typeVal <= 0.25)
             {
                 sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
                 sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
             }
             //is[0] + extraNames + combinedNames
-            else if (typeVal <= 0.60)
+            else if (typeVal <= 0.50)
             {
                 sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
                 sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count - 1)]);
                 sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
             }
             //is[0] + combinedNames + "of" + extraNames
-            else if (typeVal <= 0.80)
+            else if (typeVal <= 0.70)
             {
                 sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
-                sb.AppendFormat("{0} of ", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                if( rng.NextDouble() <= 0.50)
+                {
+                    sb.AppendFormat("{0} of ", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                }
+                else
+                {
+                    sb.AppendFormat("{0}-de-", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                }
                 sb.AppendFormat("{0}", extraNames[rng.Next(extraNames.Count - 1)]);
                 
             }
-            //OwO
+            //#yolo
+            else if( typeVal <= 0.85 )
+            {
+                sb.AppendFormat("{0} ", itemStuff[1][rng.Next(itemStuff[1].Count - 1)]);
+                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                if(rng.NextDouble() <= 0.50)
+                {
+                    sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count - 1)]);
+                }
+                else
+                {
+                    sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                }                
+            }
+            //~special items~
             else
             {
-                sb.AppendFormat("\t{0}-{1} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)], itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
-                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                if (rng.NextDouble() <= 0.50)
+                {
+                    sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count - 1)]);
+                }
+                else
+                {
+                    sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                }
+                var firstItem = combinedNames[rng.Next(combinedNames.Count - 1)];
+                var secondItem = combinedNames[rng.Next(combinedNames.Count - 1)];
+                while(secondItem == firstItem)
+                {
+                    secondItem = combinedNames[rng.Next(combinedNames.Count - 1)];
+                }
+                sb.AppendFormat("{0}2{1}", firstItem, secondItem);
             }
             return sb.ToString();
         }
