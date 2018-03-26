@@ -23,10 +23,6 @@ namespace RaresBot
             var portsBreakDown = BreakDown(allPorts);
             //Special case: remove "de" from the 2nd list.
             portsBreakDown[1].Remove("de");
-            //for( int i = 0; i < 100; i++ )
-            //{
-            //    Console.WriteLine(GetPortName(portsBreakDown));
-            //}
 
             var allItems = allRares.Select(item => item.Item);
             var itemsBreakDown = BreakDown(allItems);
@@ -37,9 +33,12 @@ namespace RaresBot
             itemsBreakDown[1].Remove("of");
             itemsBreakDown[2].Remove("Of");
             itemsBreakDown[3].Remove("42");
-            for( int i = 0; i < 100; i++ )
+
+            for( int i = 0; i < 1000; i++ )
             {
-                Console.WriteLine(GetItemName(itemsBreakDown));
+                var port = GetPortName(portsBreakDown);
+                var rare = GetItemName(itemsBreakDown);
+                Console.WriteLine("Heading to {0} to pick up some {1}", port, rare);
             }
         }
 

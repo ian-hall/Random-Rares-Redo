@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
+using System.Linq;
 
 namespace RaresBot.Tests
 {
     public class MainTest
     {
+        static string localPath = @"rares.json";
+        static List<RareGood> allRares = RareGood.LoadRares(localPath, false);
+
         [Fact]
         public void TestGetUniqueStrings1()
         {
@@ -28,6 +32,52 @@ namespace RaresBot.Tests
             }
             var calculated = Program.GetUniqueStrings(dupeList).Count;
             Assert.Equal(expectedCount, calculated);
+        }
+
+        [Theory]
+        [InlineData(50)]
+        [InlineData(100)]
+        [InlineData(500)]
+        [InlineData(1000)]
+        [InlineData(10000)]
+        //~~ 2500 repeats every 10000
+        public void TestPortGenerator(int n)
+        {
+            var allPorts = allRares.Select(item => item.Port);
+            var portsBreakDown = Program.BreakDown(allPorts);
+
+            var generatedPorts = new List<string>();
+            for( int i = 0; i < n; i++ )
+            {
+                generatedPorts.Add(Program.GetPortName(portsBreakDown));
+            }
+            var uniqueNames = Program.GetUniqueStrings(generatedPorts);
+
+            //Assert.Equal(generatedPorts, uniqueNames);
+            Assert.Equal(generatedPorts.Count, uniqueNames.Count);
+        }
+
+        [Theory]
+        [InlineData(50)]
+        [InlineData(100)]
+        [InlineData(500)]
+        [InlineData(1000)]
+        [InlineData(10000)]
+        //~~~650 repeats every 10000
+        public void TestItemGenerator(int n)
+        {
+            var allItems = allRares.Select(item => item.Item);
+            var itemsBreakdown = Program.BreakDown(allItems);
+
+            var generatedItems = new List<string>();
+            for (int i = 0; i < n; i++)
+            {
+                generatedItems.Add(Program.GetPortName(itemsBreakdown));
+            }
+            var uniqueNames = Program.GetUniqueStrings(generatedItems);
+
+            //Assert.Equal(generatedPorts, uniqueNames);
+            Assert.Equal(generatedItems.Count, uniqueNames.Count);
         }
     }
 }
