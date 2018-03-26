@@ -34,7 +34,7 @@ namespace RaresBot
             itemsBreakDown[2].Remove("Of");
             itemsBreakDown[3].Remove("42");
 
-            for( int i = 0; i < 1000; i++ )
+            for( int i = 0; i < 1; i++ )
             {
                 var port = GetPortName(portsBreakDown);
                 var rare = GetItemName(itemsBreakDown);
@@ -157,10 +157,13 @@ namespace RaresBot
                 sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count - 1)]);
                 sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
             }
-            //is[0] + combinedNames + "of" + extraNames
+            //{is[0] +} combinedNames + "of" + extraNames
             else if (typeVal <= 0.70)
             {
-                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                if( rng.NextDouble() <= 0.75)
+                {
+                    sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                }
                 if( rng.NextDouble() <= 0.50)
                 {
                     sb.AppendFormat("{0} of ", combinedNames[rng.Next(combinedNames.Count - 1)]);
