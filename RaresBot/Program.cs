@@ -20,15 +20,15 @@ namespace RaresBot
             //var ck = "";
             //var cs = "";
             //var ak = "";
-            //var as = "";
+            //var aks = "";
             //using (var secrets = new StreamReader(secretsPath))
             //{
             //    ck = secrets.ReadLine();
             //    cs = secrets.ReadLine();
             //    ak = secrets.ReadLine();
-            //    as = secrets.ReadLine();
+            //    aks = secrets.ReadLine();
             //}
-            //Auth.SetUserCredentials(ck, cs, ak, as);
+            //Auth.SetUserCredentials(ck, cs, ak, aks);
 
             //var remotePath = @"http://edtools.ddns.net/rares.json";
             //var allRares = RareGood.LoadRares(remotePath, true);
@@ -48,12 +48,12 @@ namespace RaresBot
             itemsBreakDown[2].Remove("Of");
             itemsBreakDown[3].Remove("42");
 
-            for( int i = 0; i < 100; i++ )
+            for( int i = 0; i < 1000; i++ )
             {
                 var port = GetPortName(portsBreakDown);
                 var rare = GetItemName(itemsBreakDown);
-                //var rareStr = String.Format("Heading to {0} to pick up some {1}", port, rare);
-                Console.WriteLine(GetTweetString(port,rare));
+                var rareStr = GetTweetString(port, rare);
+                Console.WriteLine(rareStr);
             }
             //Tweet.PublishTweet(rareStr);
         }
@@ -61,7 +61,7 @@ namespace RaresBot
         /// <summary>
         /// Going to eventually generate a silly name for an Elite Dangerous spaceport.
         /// </summary>
-        /// literally bespoke handcrafted markov chains because reinventing wheels is cool+good (its not)
+        /// literally bespoke handcrafted markov chains because i hate myself
         /// 
         /// IDEA: ps[0] has mostly proper names
         ///       ps[1]-ps[3] has mostly types (port, orbital, station etc)
@@ -93,14 +93,14 @@ namespace RaresBot
             //basic port name, ps[0] + ps[1-3]
             if (typeVal <= 0.40 )
             {
-                sb.AppendFormat("{0} ", portStuff[0][rng.Next(portStuff[0].Count - 1)]);
-                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                sb.AppendFormat("{0} ", portStuff[0][rng.Next(portStuff[0].Count)]);
+                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count)]);
             }
             //almost port name, ps[1-3] + ps[0]
             else if(typeVal <= 0.80)
             {
-                sb.AppendFormat("{0} ", combinedNames[rng.Next(combinedNames.Count - 1)]);
-                sb.AppendFormat("{0}", portStuff[0][rng.Next(portStuff[0].Count - 1)]);
+                sb.AppendFormat("{0} ", combinedNames[rng.Next(combinedNames.Count)]);
+                sb.AppendFormat("{0}", portStuff[0][rng.Next(portStuff[0].Count)]);
             }
             //fancy port name, ps[0]/ps[1]+ "de" + ps[0] + ps[1-3]
             else if (typeVal <= 0.90)
@@ -108,21 +108,21 @@ namespace RaresBot
                 var temp = rng.NextDouble();
                 if( temp <= 0.50 )
                 {
-                    sb.AppendFormat("{0} ", portStuff[0][rng.Next(portStuff[0].Count - 1)]);
+                    sb.AppendFormat("{0} ", portStuff[0][rng.Next(portStuff[0].Count)]);
                 }
                 else
                 {
-                    sb.AppendFormat("{0} ", portStuff[1][rng.Next(portStuff[1].Count - 1)]);
+                    sb.AppendFormat("{0} ", portStuff[1][rng.Next(portStuff[1].Count)]);
                 }
                 sb.Append("de ");
-                sb.AppendFormat("{0} ", portStuff[0][rng.Next(portStuff[0].Count - 1)]);
-                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                sb.AppendFormat("{0} ", portStuff[0][rng.Next(portStuff[0].Count)]);
+                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count)]);
             }
             //OwO
             else
             {
-                sb.AppendFormat("{0}-{1} ", portStuff[0][rng.Next(portStuff[0].Count - 1)], portStuff[0][rng.Next(portStuff[0].Count - 1)]);
-                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                sb.AppendFormat("{0}-{1} ", portStuff[0][rng.Next(portStuff[0].Count)], portStuff[0][rng.Next(portStuff[0].Count)]);
+                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count)]);
 
             }
             return sb.ToString();
@@ -163,46 +163,46 @@ namespace RaresBot
             //basic item name, is[0] + combinedNames
             if (typeVal <= 0.25)
             {
-                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
-                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count)]);
+                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count)]);
             }
             //is[0] + extraNames + combinedNames
             else if (typeVal <= 0.50)
             {
-                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
-                sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count - 1)]);
-                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count)]);
+                sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count)]);
+                sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count)]);
             }
             //{is[0] +} combinedNames + "of" + extraNames
             else if (typeVal <= 0.70)
             {
                 if( rng.NextDouble() <= 0.75)
                 {
-                    sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                    sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count)]);
                 }
                 if( rng.NextDouble() <= 0.50)
                 {
-                    sb.AppendFormat("{0} of ", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                    sb.AppendFormat("{0} of ", combinedNames[rng.Next(combinedNames.Count)]);
                 }
                 else
                 {
-                    sb.AppendFormat("{0}-de-", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                    sb.AppendFormat("{0}-de-", combinedNames[rng.Next(combinedNames.Count)]);
                 }
-                sb.AppendFormat("{0}", extraNames[rng.Next(extraNames.Count - 1)]);
+                sb.AppendFormat("{0}", extraNames[rng.Next(extraNames.Count)]);
                 
             }
             //#yolo
             else if( typeVal <= 0.85 )
             {
-                sb.AppendFormat("{0} ", itemStuff[1][rng.Next(itemStuff[1].Count - 1)]);
-                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                sb.AppendFormat("{0} ", itemStuff[1][rng.Next(itemStuff[1].Count)]);
+                sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count)]);
                 if(rng.NextDouble() <= 0.50)
                 {
-                    sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count - 1)]);
+                    sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count)]);
                 }
                 else
                 {
-                    sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count - 1)]);
+                    sb.AppendFormat("{0}", combinedNames[rng.Next(combinedNames.Count)]);
                 }                
             }
             //~special items~
@@ -210,17 +210,17 @@ namespace RaresBot
             {
                 if (rng.NextDouble() <= 0.50)
                 {
-                    sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count - 1)]);
+                    sb.AppendFormat("{0} ", extraNames[rng.Next(extraNames.Count)]);
                 }
                 else
                 {
-                    sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count - 1)]);
+                    sb.AppendFormat("{0} ", itemStuff[0][rng.Next(itemStuff[0].Count)]);
                 }
-                var firstItem = combinedNames[rng.Next(combinedNames.Count - 1)];
-                var secondItem = combinedNames[rng.Next(combinedNames.Count - 1)];
+                var firstItem = combinedNames[rng.Next(combinedNames.Count)];
+                var secondItem = combinedNames[rng.Next(combinedNames.Count)];
                 while(secondItem == firstItem)
                 {
-                    secondItem = combinedNames[rng.Next(combinedNames.Count - 1)];
+                    secondItem = combinedNames[rng.Next(combinedNames.Count)];
                 }
                 sb.AppendFormat("{0}2{1}", firstItem, secondItem);
             }
@@ -266,22 +266,22 @@ namespace RaresBot
             var portFirst = new List<string>() { "Finally made it to {0} to pick up some {1}",
                                                  "On my way to {0} to get some {1}",
                                                  "Oopsie woopsie, didn't have a permit for {0}, can't buy {1}",
-                                                 "Heading to {0} to get {1}",
+                                                 "Heading to {0} to get {1}"
                                                };
             var itemFirst = new List<string>() { "Just got some {0} from {1}",
                                                  "Ran out of {0}, heading over to {1} to get some",
-                                                 "Found out {0} was illegal after leaving {1}, oops",
+                                                 "Found out {0} was illegal after leaving {1}, oops"
                                                };
 
             var rng = new Random();
             if(rng.NextDouble() <= 0.60)
             {
-                var choice = rng.Next(portFirst.Count - 1);
+                var choice = rng.Next(portFirst.Count);
                 return String.Format(portFirst[choice], portName, itemName);
             }
             else
             {
-                var choice = rng.Next(itemFirst.Count - 1);
+                var choice = rng.Next(itemFirst.Count);
                 return String.Format(itemFirst[choice], itemName, portName);
             }
         }
