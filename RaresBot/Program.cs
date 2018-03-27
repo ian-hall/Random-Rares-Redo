@@ -16,6 +16,20 @@ namespace RaresBot
             var localPath = @"rares.json";
             var allRares = RareGood.LoadRares(localPath, false);
 
+            //var secretsPath = @"secrets.txt";
+            //var ck = "";
+            //var cs = "";
+            //var ak = "";
+            //var as = "";
+            //using (var secrets = new StreamReader(secretsPath))
+            //{
+            //    ck = secrets.ReadLine();
+            //    cs = secrets.ReadLine();
+            //    ak = secrets.ReadLine();
+            //    as = secrets.ReadLine();
+            //}
+            //Auth.SetUserCredentials(ck, cs, ak, as);
+
             //var remotePath = @"http://edtools.ddns.net/rares.json";
             //var allRares = RareGood.LoadRares(remotePath, true);
 
@@ -34,12 +48,14 @@ namespace RaresBot
             itemsBreakDown[2].Remove("Of");
             itemsBreakDown[3].Remove("42");
 
-            for( int i = 0; i < 1; i++ )
+            for( int i = 0; i < 100; i++ )
             {
                 var port = GetPortName(portsBreakDown);
                 var rare = GetItemName(itemsBreakDown);
-                Console.WriteLine("Heading to {0} to pick up some {1}", port, rare);
+                //var rareStr = String.Format("Heading to {0} to pick up some {1}", port, rare);
+                Console.WriteLine(GetTweetString(port,rare));
             }
+            //Tweet.PublishTweet(rareStr);
         }
 
         /// <summary>
@@ -240,6 +256,34 @@ namespace RaresBot
                     .ToDictionary(group => group.Key, group => group.Count())
                     .Select(kvp => kvp.Key)
                     .ToList();
+        }
+        /// <summary>
+        /// Returns a string with the given portName and itemName.
+        /// </summary>
+        public static string GetTweetString(string portName, string itemName)
+        {
+            //Want to pad these so the illegal/permit responses are very rare
+            var portFirst = new List<string>() { "Finally made it to {0} to pick up some {1}",
+                                                 "On my way to {0} to get some {1}",
+                                                 "Oopsie woopsie, didn't have a permit for {0}, can't buy {1}",
+                                                 "Heading to {0} to get {1}",
+                                               };
+            var itemFirst = new List<string>() { "Just got some {0} from {1}",
+                                                 "Ran out of {0}, heading over to {1} to get some",
+                                                 "Found out {0} was illegal after leaving {1}, oops",
+                                               };
+
+            var rng = new Random();
+            if(rng.NextDouble() <= 0.60)
+            {
+                var choice = rng.Next(portFirst.Count - 1);
+                return String.Format(portFirst[choice], portName, itemName);
+            }
+            else
+            {
+                var choice = rng.Next(itemFirst.Count - 1);
+                return String.Format(itemFirst[choice], itemName, portName);
+            }
         }
     }
 }
