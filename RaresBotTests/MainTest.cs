@@ -34,6 +34,27 @@ namespace RaresBot.Tests
             Assert.Equal(expectedCount, calculated);
         }
 
+        [Fact]
+        public void TestBreakdown()
+        {
+            var rng = new Random();
+            var longStrings = new List<string>();
+            for (int i = 0; i < 10; i++)
+            {
+                var max = rng.Next(1, 10);
+                var sb = new System.Text.StringBuilder();
+                for ( int j = 0; j < max-1; j++)
+                {
+                    sb.AppendFormat("{0} ", rng.Next(1000));
+                }
+                sb.AppendFormat("{0}", max-1);
+                longStrings.Add(sb.ToString());
+            }
+            var brokenDown = Program.BreakDown(longStrings);
+            var longestLen = longStrings.Max(s => s.Split().Count());
+            Assert.Equal(longestLen, brokenDown.Count);
+        }
+
         [Theory]
         [InlineData(50)]
         [InlineData(100)]

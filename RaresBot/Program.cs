@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.IO;
-using System.Json;
 using System.Collections.Generic;
-using Microsoft.FSharp.Collections;
 using System.Net;
 using Tweetinvi;
 
@@ -48,13 +45,17 @@ namespace RaresBot
             itemsBreakDown[2].Remove("Of");
             itemsBreakDown[3].Remove("42");
 
-            for( int i = 0; i < 100; i++ )
+            for (int i = 0; i < 100; i++)
             {
                 var port = GetPortName(portsBreakDown);
                 var rare = GetItemName(itemsBreakDown);
                 var rareStr = GetTweetString(port, rare);
                 Console.WriteLine(rareStr);
             }
+
+            //var port = GetPortName(portsBreakDown);
+            //var rare = GetItemName(itemsBreakDown);
+            //var rareStr = GetTweetString(port, rare);
             //Tweet.PublishTweet(rareStr);
         }
 
@@ -263,15 +264,15 @@ namespace RaresBot
         public static string GetTweetString(string portName, string itemName)
         {
             //Want to pad these so the illegal/permit responses are very rare
-            var portFirst = new List<string>() { "Made it to {0}, gonna grab some {1}",
+            var portFirst = new List<string>() { "Made it to {0}, going to grab some {1}",
                                                  "On my way to {0} to get some {1}",
-                                                 "Oopsie woopsie, didn't have a permit for {0}, can't buy {1}",
+                                                 "Didn't have a permit for {0}, can't get {1}",
                                                  "Heading to {0} to get {1}",
                                                  "Just leaving {0} with some {1}"
                                                };
             var itemFirst = new List<string>() { "Just got some {0} from {1}",
                                                  "Ran out of {0}, heading over to {1} to get some",
-                                                 "Found out {0} was illegal after leaving {1}, oops"
+                                                 "{0} from {1} is some good stuff"
                                                };
 
             var rng = new Random();
