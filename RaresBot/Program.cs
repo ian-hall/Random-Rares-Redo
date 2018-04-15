@@ -18,7 +18,7 @@ namespace RaresBot
             //var cs = "";
             //var ak = "";
             //var aks = "";
-            //using (var secrets = new StreamReader(secretsPath))
+            //using (var secrets = new System.IO.StreamReader(secretsPath))
             //{
             //    ck = secrets.ReadLine();
             //    cs = secrets.ReadLine();
